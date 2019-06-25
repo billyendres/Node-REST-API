@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 //Lets express know how to handle cookies from passport.js
 //Import keys and mongoURI
 const keys = require("./config/keys");
+require("./models/User");
 
 //Connect private keys
 mongoose.connect(keys.mongoURI);
@@ -21,7 +22,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Setup Dynamic PORT
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 5600;
 
 //Heroku Open to start
 //Install nodemon add to package.json
