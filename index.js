@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 //Import keys and mongoURI
 const keys = require("./config/keys");
-const User = require("./models/User");
 
 //ROUTES
 const userRouter = require("./routes/User");
@@ -30,7 +29,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Setup Dynamic PORT
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5600;
 
 //Heroku Open to start
 //Install nodemon add to package.json
