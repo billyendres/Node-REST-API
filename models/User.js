@@ -1,18 +1,47 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const validator = require("validator");
 
 //Creating schemas
-const userSchema = new Schema({
+const User = mongoose.model("User", {
 	name: {
-		type: String
+		type: String,
+		require: true,
+		trim: true
+	},
+	email: {
+		type: String,
+		required: true,
+		trim: true,
+		lowercase: true,
+		validate(value) {
+			if (!validator.isEmail(value)) {
+				throw new Error("Email Is Invalid");
+			}
+		}
+	},
+	password: {
+		type: String,
+		required: true,
+		minlength: 7,
+		trim: true
 	},
 	age: {
-		type: Number
+		type: Number,
+		default: 0,
+		validate(value) {
+			if (value < 0) {
+				throw new Error("Age Must Be Positive");
+			}
+		}
 	}
 });
 
-//Tells mongoose to create a new db collection called users
-mongoose.model("users", userSchema);
 //IMPORT TO INDEX.JS
-// const User = mongoose.model("users");
-// new User({ name: "Billy", age: 24 }).save();
+module.exports = User;
+
+// new User({
+// 	name: "Billy",
+// 	age: 24,
+// 	email: "endres63@hotmail.com",
+// 	password: "Billy1234!"
+// }).save();

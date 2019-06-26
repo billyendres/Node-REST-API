@@ -1,14 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
-//Lets express know how to handle cookies from passport.js
 //Import keys and mongoURI
 const keys = require("./config/keys");
-require("./models/User");
+const User = require("./models/User");
+
+//ROUTES
+const userRouter = require("./routes/User");
 
 //Connect private keys
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, {
+	useNewUrlParser: true,
+	useCreateIndex: true
+});
 
 const app = express();
+
+app.use(express.json());
+app.use(userRouter);
 
 //Only runs this code if in production - Heroku Deploy
 if (process.env.NODE_ENV === "production") {
@@ -22,7 +30,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Setup Dynamic PORT
-const PORT = process.env.PORT || 5600;
+const PORT = process.env.PORT || 5000;
 
 //Heroku Open to start
 //Install nodemon add to package.json
