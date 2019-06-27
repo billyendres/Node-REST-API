@@ -5,7 +5,7 @@ const validator = require("validator");
 const Task = mongoose.model("Task", {
 	description: {
 		type: String,
-		require: true
+		required: true
 	},
 	completed: {
 		type: Boolean,

@@ -17,6 +17,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"concurrently": "^4.1.0",
 		"express": "^4.17.1",
 		"mongoose": "^5.6.1",

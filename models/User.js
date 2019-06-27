@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 //Creating schemas
-const User = mongoose.model("User", {
+const userSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		require: true,
+		required: true,
 		trim: true
 	},
 	email: {
@@ -36,12 +37,17 @@ const User = mongoose.model("User", {
 	}
 });
 
+//Securely encrypting password
+//use function not => to access this
+userSchema.pre("save", async function(next) {
+	const user = this;
+	if (user.isModified("password")) {
+		user.password = await bcrypt.hash(user.password, 8);
+	}
+	next();
+});
+
+const User = mongoose.model("User", userSchema);
+
 //IMPORT TO INDEX.JS
 module.exports = User;
-
-// new User({
-// 	name: "Billy",
-// 	age: 24,
-// 	email: "endres63@hotmail.com",
-// 	password: "Billy1234!"
-// }).save();
