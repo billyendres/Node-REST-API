@@ -5,6 +5,7 @@ const keys = require("./config/keys");
 
 //ROUTES
 const userRouter = require("./routes/User");
+const taskRouter = require("./routes/Task");
 
 //Connect private keys
 mongoose.connect(keys.mongoURI, {
@@ -16,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(userRouter);
+app.use(taskRouter);
 
 //Only runs this code if in production - Heroku Deploy
 if (process.env.NODE_ENV === "production") {
