@@ -28,6 +28,31 @@ router.post("/users/login", async (req, res) => {
 	}
 });
 
+//Allows user to logout of a single device with token
+//(not multiple devices at once ie. computer & phone)
+router.post("/users/logout", auth, async (req, res) => {
+	try {
+		req.user.tokens = req.user.tokens.filter(token => {
+			return token.token !== req.token;
+		});
+		await req.user.save();
+		res.send();
+	} catch (e) {
+		res.status(500).send();
+	}
+});
+
+//Logs users out of all devices
+router.post("/users/logoutAll", auth, async (req, res) => {
+	try {
+		req.user.tokens = [];
+		await req.user.save();
+		res.send();
+	} catch (e) {
+		res.status(500).send();
+	}
+});
+
 //Passing in auth middleware as 2nd function
 //Before route handle runs
 //RH only runs if next() is called from auth
