@@ -17,9 +17,21 @@ router.post("/hobbies", auth, async (req, res) => {
 	}
 });
 
+//Pagination & Sorting
 router.get("/hobbies", auth, async (req, res) => {
 	try {
-		await req.user.populate("hobbies").execPopulate();
+		await req.user
+			.populate({
+				path: "hobbies",
+				match,
+				options: {
+					limit: parseInt(req.query.limit),
+					sort: {
+						createdAt: -1
+					}
+				}
+			})
+			.execPopulate();
 		res.send(req.user.hobbies);
 	} catch (e) {
 		res.status(500).send();
@@ -42,7 +54,7 @@ router.get("/hobbies/:id", auth, async (req, res) => {
 router.patch("/hobbies/:id", auth, async (req, res) => {
 	//Checks if update is valid
 	const updates = Object.keys(req.body);
-	const allowedUpdates = ["description", "completed"];
+	const allowedUpdates = ["description"];
 	const isValidOperation = updates.every(update =>
 		allowedUpdates.includes(update)
 	);
