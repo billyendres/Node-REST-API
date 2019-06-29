@@ -5,7 +5,7 @@ const keys = require("./config/keys");
 
 //ROUTES
 const userRouter = require("./routes/User");
-const taskRouter = require("./routes/Task");
+const hobbyRouter = require("./routes/Hobby");
 
 //Connect private keys
 mongoose.connect(keys.mongoURI, {
@@ -17,7 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(userRouter);
-app.use(taskRouter);
+app.use(hobbyRouter);
 
 //Only runs this code if in production - Heroku Deploy
 if (process.env.NODE_ENV === "production") {
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Setup Dynamic PORT
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 5600;
 
 //Heroku Open to start
 //Install nodemon add to package.json

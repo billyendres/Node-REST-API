@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Hobby = require("./Hobby");
 
 //Creating schemas
 const userSchema = new mongoose.Schema({
@@ -47,6 +48,12 @@ const userSchema = new mongoose.Schema({
 	]
 });
 
+userSchema.virtual("hobbies", {
+	ref: "Hobby",
+	localField: "_id",
+	foreignField: "owner"
+});
+
 //Return public profile, not password/ auth token
 userSchema.methods.toJSON = function() {
 	const user = this;
@@ -87,6 +94,13 @@ userSchema.pre("save", async function(next) {
 	if (user.isModified("password")) {
 		user.password = await bcrypt.hash(user.password, 8);
 	}
+	next();
+});
+
+// Delete Hobbies when user deletes profile
+userSchema.pre("remove", async function(next) {
+	const user = this;
+	await Hobby.deleteMany({ owner: user._id });
 	next();
 });
 

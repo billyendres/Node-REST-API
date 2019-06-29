@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 //Creating schemas
-const Task = mongoose.model("Task", {
+const Hobby = mongoose.model("Hobby", {
 	description: {
 		type: String,
 		required: true
@@ -10,8 +10,13 @@ const Task = mongoose.model("Task", {
 	completed: {
 		type: Boolean,
 		required: true
+	},
+	owner: {
+		type: mongoose.SchemaTypes.ObjectId,
+		required: true,
+		ref: "User"
 	}
 });
 
 //IMPORT TO INDEX.JS
-module.exports = Task;
+module.exports = Hobby;
