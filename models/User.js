@@ -47,6 +47,15 @@ const userSchema = new mongoose.Schema({
 	]
 });
 
+//Return public profile, not password/ auth token
+userSchema.methods.toJSON = function() {
+	const user = this;
+	const userObject = user.toObject();
+	delete userObject.password;
+	delete userObject.tokens;
+	return userObject;
+};
+
 //Setup JWT auth
 //Save to db
 userSchema.methods.generateAuthToken = async function() {
