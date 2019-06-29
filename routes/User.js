@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
 
@@ -89,6 +90,41 @@ router.delete("/users/profile", auth, async (req, res) => {
 	} catch (e) {
 		res.status(500).send();
 	}
+});
+
+//Custom image upload middlware
+const upload = multer({
+	limits: {
+		fileSize: 5000000
+	},
+	fileFilter(req, file, cb) {
+		if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
+			return cb(new Error("File must be and image"));
+		}
+		cb(undefined, true);
+	}
+});
+
+//Uploads/ edits users profile image
+router.post(
+	"/users/profile/avatar",
+	auth,
+	upload.single("avatar"),
+	async (req, res) => {
+		req.user.avatar = req.file.buffer;
+		await req.user.save();
+		res.send();
+	},
+	(error, req, res, next) => {
+		res.status(400).send({ error: error.message });
+	}
+);
+
+//Delete user profile image
+router.delete("/users/profile/avatar", auth, async (req, res) => {
+	req.user.avatar = undefined;
+	await req.user.save();
+	res.send();
 });
 
 module.exports = router;
