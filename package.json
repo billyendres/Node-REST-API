@@ -20,7 +20,7 @@
 		"bcryptjs": "^2.4.3",
 		"concurrently": "^4.1.0",
 		"express": "^4.17.1",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"mongoose": "^5.6.1",
 		"multer": "^1.4.1",
 		"nodemon": "^1.19.1",
